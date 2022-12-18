@@ -1,4 +1,4 @@
-# MovieApp
+# MovieApp - React Native
 ### Starting app
 ##### Android
 - start **Emulator Pixel XL API 31** in Android Studio
