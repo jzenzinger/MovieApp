@@ -1,15 +1,27 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TextInput } from 'react-native';
-import { NativeBaseProvider, Box } from "native-base";
+import {Text} from 'react-native';
+import {
+    NativeBaseProvider,
+    Box,
+    VStack
+} from "native-base";
+
+// Components imports
+import Footer from "./views/Footer";
 
 const App = () => {
-  return (
-      <ScrollView>
-          <NativeBaseProvider>
-              <Box>Hello world native provider</Box>
-          </NativeBaseProvider>
-      </ScrollView>
-  );
+    return (
+        <NativeBaseProvider width="100%">
+            <VStack height="90%">
+                <Text>
+                    Content
+                </Text>
+            </VStack>
+            <Box safeAreaTop width="95%" alignSelf="center">
+                <Footer/>
+            </Box>
+        </NativeBaseProvider>
+    );
 }
 
 export default App;
