@@ -18,7 +18,6 @@ const App = () => {
             setData(response);
         } catch (error) {
             console.error(error);
-            console.log(API);
         // }
         } finally {
             setLoading(false);
