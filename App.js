@@ -1,51 +1,38 @@
-import {useEffect, useState} from 'react';
-import {Text, FlatList, ActivityIndicator} from 'react-native';
-import axios from "axios";
-import { NativeBaseProvider, Box, VStack } from "native-base";
+import {useState} from 'react';
+import axios from 'axios';
+import {Box, Container, List, Text, Button} from 'native-base';
+
 // Components imports
 import Footer from "./views/Footer";
-
-const API = process.env.API_URL;
+import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 
 const App = () => {
-    const [isLoading, setLoading] = useState(true);
+    // const [isLoading, setLoading] = useState(true);
+
     const [data, setData] = useState([]);
 
     const getMoviesFromAPI = async () => {
         try {
-            const url = `${API}&t=mission`;
-            const response = await axios.get(url);
-            setData(response);
+            const response = await axios.get(`https://www.omdbapi.com/?apikey=${process.env.API_KEY}&t=mission`);
+            setData(response.data);
         } catch (error) {
             console.error(error);
-        // }
-        } finally {
-            setLoading(false);
         }
     };
 
-    useEffect(() => {
-        getMoviesFromAPI();
-    }, []);
-
-    return (
-        <NativeBaseProvider width="100%">
-            <VStack height="90%">
-                {isLoading ? <ActivityIndicator/> : (
-                    <FlatList
-                        data={data}
-                        keyExtractor={({ id }, index) => id}
-                        renderItem={({ item }) => (
-                            <Text>{item.title}, {item.year}, {item.genre}</Text>
-                        )}
-                    />
-                )}
-            </VStack>
+    return (<NativeBaseProvider width="100%">
+            <Button margin={'2%'} onPress={getMoviesFromAPI}>
+                <Text>Fetch Data</Text>
+            </Button>
+            <Container height="80%">
+                <List>
+                    <Text>{JSON.stringify(data)}</Text>
+                </List>
+            </Container>
             <Box safeAreaTop width="95%" alignSelf="center">
                 <Footer/>
             </Box>
-        </NativeBaseProvider>
-    );
+        </NativeBaseProvider>);
 }
 
 export default App;
