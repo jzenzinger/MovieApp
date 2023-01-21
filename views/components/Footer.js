@@ -8,7 +8,7 @@ import {
     Icon,
     HamburgerIcon,
     SearchIcon,
-    FavouriteIcon, CircleIcon
+    FavouriteIcon
 } from "native-base";
 
 const Footer = () => {
@@ -48,17 +48,6 @@ const Footer = () => {
                         </Icon>
                         <Text style={{color: "white", fontSize: 12}}>
                             Favourites
-                        </Text>
-                    </Center>
-                </Pressable>
-                <Pressable cursor="pointer" opacity={selected === 3 ? 1 : 0.5} py="2" flex={1}
-                           onPress={() => setSelected(3)}>
-                    <Center>
-                        <Icon style={{color: "white", fontSize: 14, marginBottom: 2}}>
-                            <CircleIcon name="circle" style={{color: "white"}}/>
-                        </Icon>
-                        <Text style={{color: "white", fontSize: 12}}>
-                            Account
                         </Text>
                     </Center>
                 </Pressable>
