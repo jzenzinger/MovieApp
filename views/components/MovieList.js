@@ -1,17 +1,22 @@
-import { Box } from "native-base";
+import {HStack, VStack} from "native-base";
 import MovieCard from "./MovieCard";
 
 const MovieList = (props) => {
     return (
-        <Box>
+        <VStack>
             {
-                props.data.length === 0 ?
-                    console.error("Props.data is empty or not array")
-                    : props.data.map((movie, index) => {
-                        return <MovieCard key={index} data={movie}></MovieCard>
-                    })
+                props.data.map((movie, index) => {
+                    if(index % 2 === 0) {
+                        return (
+                            <HStack key={index}>
+                                <MovieCard key={index} data={movie}></MovieCard>
+                                <MovieCard key={index + 1} data={props.data[index + 1]}></MovieCard>
+                            </HStack>
+                        );
+                    }
+                })
             }
-        </Box>
+        </VStack>
     );
 }
 
