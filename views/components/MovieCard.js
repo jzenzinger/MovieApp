@@ -11,6 +11,9 @@ import {
 
 
 const MovieCard = (props) => {
+    const capitalizeFirst = str => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
     return (
         <Box width="50%" alignItems="center" padding="1">
             <Box rounded="lg" overflow="hidden" borderColor="coolGray.300" borderWidth="1" _dark={{
@@ -48,7 +51,7 @@ const MovieCard = (props) => {
                         }} _dark={{
                             color: "indigo.400"
                         }} fontWeight="500" ml="-0.5" mt="-1">
-                            {props.data.Genre}
+                            {capitalizeFirst(props.data.Type)}
                         </Text>
                     </Stack>
                 </Stack>
