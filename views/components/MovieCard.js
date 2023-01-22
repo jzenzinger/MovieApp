@@ -28,8 +28,8 @@ const MovieCard = (props) => {
                             uri: props.data.Poster
                         }} alt="image"/>
                     </AspectRatio>
-                    <Center bg="violet.600" _dark={{
-                        bg: "violet.400"
+                    <Center bg="indigo.600" _dark={{
+                        bg: "indigo.400"
                     }} _text={{
                         color: "warmGray.50",
                         fontWeight: "700",
@@ -44,16 +44,16 @@ const MovieCard = (props) => {
                             {props.data.Title}
                         </Heading>
                         <Text fontSize="xs" _light={{
-                            color: "violet.600"
+                            color: "indigo.600"
                         }} _dark={{
-                            color: "violet.400"
+                            color: "indigo.400"
                         }} fontWeight="500" ml="-0.5" mt="-1">
                             {props.data.Genre}
                         </Text>
                     </Stack>
                 </Stack>
                 <HStack space="3" px="4" pb="4">
-                    <Text fontSize="xs" _light={{color: "violet.600"}} _dark={{color: "violet.400"}}>
+                    <Text fontSize="xs" _light={{color: "indigo.600"}} _dark={{color: "indigo.400"}}>
                         Find out more
                     </Text>
                 </HStack>
