@@ -12,7 +12,7 @@ import {
 
 const Footer = (props) => {
     return (
-        <HStack bg="indigo.700" alignItems="center" safeAreaBottom style={{borderRadius: 20 }} elevation={5}>
+        <HStack bg="indigo.700" alignItems="center" safeAreaBottom style={{borderRadius: 20 }} elevation={8}>
             <Pressable cursor="pointer" opacity={props.selected === 0 ? 1 : 0.5} py="3" flex={1}
                        onPress={() => props.onSelection(0)}>
                 <Center>

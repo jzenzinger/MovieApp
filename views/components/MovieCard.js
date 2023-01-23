@@ -1,19 +1,40 @@
 import {
-    HStack,
-    Box,
-    Heading,
-    Stack,
-    Center,
-    Image,
     AspectRatio,
+    Box,
+    Button,
+    Center,
+    FavouriteIcon,
+    Heading,
+    HStack,
+    Icon,
+    Image,
+    InfoIcon,
+    Stack,
     Text
 } from "native-base";
+import React, {useState} from "react";
+import axios from "axios";
+import MovieModal from "./MovieModal";
 
 
 const MovieCard = (props) => {
+    const [data, setData] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+
     const capitalizeFirst = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
+
+    const getMovieInfo = async (movieID) => {
+        try {
+            const response = await axios.get(`https://www.omdbapi.com/?apikey=${process.env.API_KEY}&i=${movieID}`);
+            setData(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+        setShowModal(true);
+    }
+
     return (
         <Box width="50%" alignItems="center" padding="1">
             <Box rounded="lg" overflow="hidden" borderColor="coolGray.300" borderWidth="1" _dark={{
@@ -55,12 +76,23 @@ const MovieCard = (props) => {
                         </Text>
                     </Stack>
                 </Stack>
-                <HStack space="3" px="4" pb="4">
-                    <Text fontSize="xs" _light={{color: "indigo.600"}} _dark={{color: "indigo.400"}}>
-                        Find out more
-                    </Text>
+                <HStack space="3" px="3" pb="4" alignItems="center" justifyContent="space-between">
+                    <Button size="xs" fontWeight="800" variant="outline" _text={{color: "indigo.600"}}
+                            onPress={() => getMovieInfo(props.data.imdbID)}
+                    >
+                        <HStack>
+                            <Icon fontSize="xs"  marginTop="0.5" marginRight="1">
+                                <InfoIcon style={{color: "rgb(94,0,255)"}}></InfoIcon>
+                            </Icon>
+                            <Text fontSize="xs" color="indigo.600">Find out more</Text>
+                        </HStack>
+                    </Button>
+                    <Icon>
+                        <FavouriteIcon olor="indigo.600"></FavouriteIcon>
+                    </Icon>
                 </HStack>
             </Box>
+            <MovieModal movie={data} handleShowModal={() => setShowModal(!showModal)} showModal={showModal}/>
         </Box>
     );
 }

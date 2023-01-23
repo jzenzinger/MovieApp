@@ -41,7 +41,7 @@ const SearchView = () => {
             <ScrollView margin="2%">
                 {isLoading
                     ? <Text marginTop="50%" alignSelf="center">No movies searched yet.</Text>
-                    : <Stack alignSelf="center" maxWidth="95%">
+                    : <Stack alignSelf="center" maxWidth="95%" paddingBottom="17%">
                         <MovieList data={data}/>
                     </Stack>
                 }

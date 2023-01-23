@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { Box, NativeBaseProvider} from 'native-base';
+import {Box, NativeBaseProvider} from 'native-base';
 // Components imports
 import Footer from "./views/components/Footer";
 import SearchView from "./views/SearchView";
@@ -15,10 +15,11 @@ const App = () => {
 
     return (
         <NativeBaseProvider borderRadius="md" width="100%">
+            {/* Can be implemented by React-Navigation*/}
             {selected === 0 && <HomeView />}
             {selected === 1 && <SearchView/>}
             {selected === 2 && <FavouritesView />}
-            <Box safeAreaTop width="95%" alignSelf="center" marginBottom="2%" position="absolute" bottom="0">
+            <Box safeAreaTop width="85%" alignSelf="center" marginBottom="2%" position="absolute" bottom="0">
                 <Footer selected={selected} onSelection={handleViewChange}/>
             </Box>
         </NativeBaseProvider>
