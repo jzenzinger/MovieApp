@@ -15,11 +15,13 @@ import {
 import React, {useState} from "react";
 import axios from "axios";
 import MovieModal from "./MovieModal";
+import {AsyncStorage} from "react-native";
 
 
 const MovieCard = (props) => {
     const [data, setData] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [isFavourite, setIsFavourite] = useState(false);
 
     const capitalizeFirst = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,6 +35,21 @@ const MovieCard = (props) => {
             console.error(error);
         }
         setShowModal(true);
+    }
+
+    const addToFavourites = async (movie) => {
+        const prevData =  AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
+        const jsonData = JSON.parse(prevData);
+        if (jsonData.length !== 0) {
+           jsonData.push(movie);
+        }
+        try {
+            await AsyncStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(movie))
+        } catch(error) {
+            console.error(error);
+        } finally {
+            setIsFavourite(true);
+        }
     }
 
     return (
@@ -88,7 +105,8 @@ const MovieCard = (props) => {
                         </HStack>
                     </Button>
                     <Icon>
-                        <FavouriteIcon olor="indigo.600"></FavouriteIcon>
+                        <FavouriteIcon onPress={() => addToFavourites(props.data)}
+                                       style={{color: isFavourite ? "red" : "gray"}}></FavouriteIcon>
                     </Icon>
                 </HStack>
             </Box>
