@@ -1,41 +1,77 @@
-import {Container, ScrollView, Stack, Text} from "native-base";
-import MovieList from "./components/MovieList";
+import {Alert, Stack, Text} from "native-base";
 import {useState, useEffect} from "react";
-import {AsyncStorage} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage/";
+import FavouriteList from "./components/FavouriteList";
+import MovieModal from "./components/MovieModal";
 
 const FavouritesView = () => {
     const [movies, setMovies] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [movieModal, setMovieModal] = useState({});
 
-    useEffect(() => {
-        const prevData =  AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
-        const jsonData = JSON.parse(prevData);
-        if (jsonData.length !== 0) {
-            setMovies(jsonData);
-            setLoading(false);
-        } else {
-            setLoading(true);
+    useEffect ( () => {
+        async function fetchData() {
+            const prevData = await AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
+            if (prevData !== null ) {
+                const json = JSON.parse(prevData);
+                setMovies(json);
+                if(json.length !== 0) {
+                    setLoading(!isLoading);
+                }
+            }
         }
-    });
+        fetchData();
+    }, []);
+
+    const handleModal = (item) => {
+        if(item.length !== 0 || true)  {
+            setMovieModal(item);
+        }
+    }
+
+    const deleteMovie = async (movie) => {
+        try {
+            const prevData = await AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
+            const json = JSON.parse(prevData);
+            const movieDeleted = json.filter((e) => {
+                return e.imdbID !== movie.imdbID;
+
+            })
+            await AsyncStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(movieDeleted));
+            setMovies(movieDeleted);
+        }
+        catch(e) {
+            console.error(e);
+        }
+    }
 
     return (
-        <Container>
+        <Stack>
             <Text marginTop="5" marginLeft="5" fontSize="xl" _light={{
                 color: "indigo.600"
             }} _dark={{
                 color: "indigo.400"
             }} fontWeight="700">
-                Favourites Movies/Series
+                Favourite Movies/Series
             </Text>
-            <ScrollView margin="2%">
-                {isLoading
-                    ? <Text marginTop="50%" alignSelf="center">No movies added to favourite list yet.</Text>
-                    : <Stack alignSelf="center" maxWidth="95%" paddingBottom="17%">
-                        <MovieList data={movies}/>
-                    </Stack>
-                }
-            </ScrollView>
-        </Container>
+            {isLoading
+                ? <Text marginTop="50%" textAlign="center">No movies added to favourite list yet.</Text>
+                : <Stack marginTop="5%" alignSelf="center" height="89%" width="90%" paddingBottom="17%">
+                    <FavouriteList data={movies}
+                                   showModal={(show) => setShowModal(show)}
+                                   handleMovieModal={(item) => handleModal(item)}
+                                   handleDelete={(m) => deleteMovie(m)}
+                    />
+                    {
+                        handleModal ?
+                            <MovieModal movie={movieModal} handleShowModal={() => setShowModal(!showModal)} showModal={showModal}/>
+                            :
+                            <Alert>Cant open Modal</Alert>
+                    }
+                </Stack>
+            }
+        </Stack>
     );
 }
 

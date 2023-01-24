@@ -15,8 +15,7 @@ import {
 import React, {useState} from "react";
 import axios from "axios";
 import MovieModal from "./MovieModal";
-import {AsyncStorage} from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage/";
 
 const MovieCard = (props) => {
     const [data, setData] = useState([]);
@@ -34,21 +33,26 @@ const MovieCard = (props) => {
         } catch (error) {
             console.error(error);
         }
-        setShowModal(true);
     }
 
     const addToFavourites = async (movie) => {
-        const prevData =  AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
-        const jsonData = JSON.parse(prevData);
-        if (jsonData.length !== 0) {
-           jsonData.push(movie);
-        }
         try {
-            await AsyncStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(movie))
+            const response = await axios.get(`https://www.omdbapi.com/?apikey=${process.env.API_KEY}&i=${movie.imdbID}`);
+            let arr = [];
+            const prevData = await AsyncStorage.getItem(`${process.env.STORAGE_KEY}`);
+            if (prevData !== null) {
+                const json = JSON.parse(prevData);
+                const movieDeleted = json.filter((e) => {
+                    return e.imdbID !== movie.imdbID;
+
+                })
+                arr = movieDeleted.concat(response.data);
+            } else {
+                arr.push(response.data);
+            }
+            await AsyncStorage.setItem(`${process.env.STORAGE_KEY}`, JSON.stringify(arr));
         } catch(error) {
             console.error(error);
-        } finally {
-            setIsFavourite(true);
         }
     }
 
@@ -79,7 +83,7 @@ const MovieCard = (props) => {
                         {props.data.Year}
                     </Center>
                 </Box>
-                <Stack p="4" space={3}>
+                <Stack mt="2" px="4" space={3}>
                     <Stack space={2}>
                         <Heading size="md" ml="-1">
                             {props.data.Title}
@@ -93,9 +97,23 @@ const MovieCard = (props) => {
                         </Text>
                     </Stack>
                 </Stack>
-                <HStack space="3" px="3" pb="4" alignItems="center" justifyContent="space-between">
+                <Stack ml="-8" mb="4">
+                    <Button size="xs" fontWeight="600" variant="link" onPress={ async () => {
+                        await addToFavourites(props.data);
+                        setIsFavourite(!isFavourite);
+                    }}>
+                        <HStack alignItems="center">
+                            <FavouriteIcon marginRight="1" color={isFavourite ? "danger.700" : "gray.400"}></FavouriteIcon>
+                            <Text fontSize="xs" color={isFavourite ? "danger.700" : "gray.400"}>Add to favourites</Text>
+                        </HStack>
+                    </Button>
+                </Stack>
+                <HStack space="4" px="3" pb="4" justifyContent="center">
                     <Button size="xs" fontWeight="800" variant="outline" _text={{color: "indigo.600"}}
-                            onPress={() => getMovieInfo(props.data.imdbID)}
+                            onPress={ async () => {
+                                await getMovieInfo(props.data.imdbID);
+                                setShowModal(true);
+                            }}
                     >
                         <HStack>
                             <Icon fontSize="xs"  marginTop="0.5" marginRight="1">
@@ -104,10 +122,6 @@ const MovieCard = (props) => {
                             <Text fontSize="xs" color="indigo.600">Find out more</Text>
                         </HStack>
                     </Button>
-                    <Icon>
-                        <FavouriteIcon onPress={() => addToFavourites(props.data)}
-                                       style={{color: isFavourite ? "red" : "gray"}}></FavouriteIcon>
-                    </Icon>
                 </HStack>
             </Box>
             <MovieModal movie={data} handleShowModal={() => setShowModal(!showModal)} showModal={showModal}/>

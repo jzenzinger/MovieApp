@@ -5,7 +5,7 @@ import {StyleSheet} from "react-native";
 const HomeView = () => {
     return (
         <Box height="100%" width="100%">
-            <Center w="100%" h="40%" bg="indigo.700" elevation={20}>
+            <Center w="100%" h="40%" bg="indigo.600" borderBottomRadius="15" elevation={30}>
                 <Text fontSize="5xl" style={styles.heading}>Welcome back!</Text>
                 <Text fontSize="xl" marginTop="5" style={styles.heading}>Ready to search favourites {"\n"}movies/series again?</Text>
             </Center>
