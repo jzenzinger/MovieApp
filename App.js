@@ -1,10 +1,11 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Box, NativeBaseProvider} from 'native-base';
 // Components imports
 import Footer from "./views/components/Footer";
 import SearchView from "./views/SearchView";
 import FavouritesView from "./views/FavouritesView";
 import HomeView from "./views/HomeView";
+import SplashScreen from "react-native-splash-screen";
 
 const App = () => {
     const [selected, setSelected] = useState(0);
@@ -12,6 +13,7 @@ const App = () => {
     const handleViewChange = (value) => {
         setSelected(value);
     }
+    useEffect(() => SplashScreen.hide(), []);
 
     return (
         <NativeBaseProvider borderRadius="md" width="100%">
