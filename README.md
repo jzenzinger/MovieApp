@@ -15,3 +15,6 @@
 - on new Terminal tab build app: ```npx react-native run-android```
 
 Now you should be able to see your application
+
+### Views
+<img src="https://user-images.githubusercontent.com/56548420/214322014-fbda44f9-f0a7-4aec-a5e1-c9a8b88a0e1d.png"  width="300" /> <img src="https://user-images.githubusercontent.com/56548420/214322168-95256bf2-1174-4104-9a77-e7553302d7c0.png" width="300" /> <img src="https://user-images.githubusercontent.com/56548420/214323074-a447726d-0ed6-4328-8579-b5fc2e18d3d7.png" width="300" />
