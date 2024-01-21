@@ -3,6 +3,7 @@
 ##### Tech Stack
 - React-Native
 - Native-base _(UI Library)_
+- Async Storage for saving list of favourites movies/series
 ##### API
 - Movie API: https://www.omdbapi.com/
 - For your local run: 
